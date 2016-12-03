@@ -631,6 +631,11 @@ int sched_proc(struct proc *p,
 
 	if (priority != -1)
 		p->p_priority = priority;
+
+    //new added, 2016.12.3
+    if (p->p_deadline.tmr_exp_time > 0 )//if proc has deadline, then put it into highest user queue
+        p->p_priority = 0;//highest user queue
+
 	if (quantum != -1) {
 		p->p_quantum_size_ms = quantum;
 		p->p_cpu_time_left = ms_2_cpu_time(quantum);
