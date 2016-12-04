@@ -1,6 +1,6 @@
 #include "syslib.h"
 
-int sys_chrt(endpoint_t proc_ep,long deadline)
+int sys_chrealtime(endpoint_t proc_ep,long deadline)
 {
     message m;
     m.m2_i1 = proc_ep;

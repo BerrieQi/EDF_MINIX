@@ -12,7 +12,7 @@
 #if USE_CHREALTIME
 
 /*===============================================================*
- *				  do_chrt				     *
+ *				  do_chrealtime				     *
 *===============================================================*/
 
 void reach_deadline(timer_t * tp)
@@ -26,7 +26,7 @@ int do_chrealtime(message *m_ptr)
   struct proc *rp;
   timer_t *tp;
   rp = proc_addr(m_ptr->m2_i1); //m2_i1 is the end point, proc_addr is in kernel/proc.h
-  RTS_LOCK_SET(rp, RTS_SYS_LOCK);//lock the process from schduled
+  RTS_SET(rp, RTS_SYS_LOCK);//lock the process from schduled
   if (rp->p_deadline.tmr_exp_time!=0)
   {
     reset_timer(&rp->p_deadline);
@@ -41,7 +41,7 @@ int do_chrealtime(message *m_ptr)
   	printf("Process %d sets timer, deadline = %d \n",tp->tmr_arg.ta_int,tp->tmr_exp_time);
   	set_timer(tp,tp->tmr_exp_time,tp->tmr_func);                                                        //clock.c, set a timer for the time out of process
   }
-	RTS_LOCK_UNSET(rp, RTS_SYS_LOCK);//unlock the process, it can be scheduled
+	RTS_UNSET(rp, RTS_SYS_LOCK);//unlock the process, it can be scheduled
   return(OK);
 }
 void reach_deadline(timer_t *tp)
