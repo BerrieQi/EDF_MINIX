@@ -1726,8 +1726,8 @@ static struct proc * pick_proc(void)
         TRACE(VF_PICKPROC, printf("cpu %d queue %d empty\n", cpuid, q););
         continue;
     }
-    //if current queue is 0, there might be real time proc. find it and execute small deadline proc first, new added 2016.12.3
-    if (q == 0)
+    //if current queue is 7, there might be real time proc. find it and execute small deadline proc first, new added 2016.12.3
+    if (q == 7)
     {
       rp =rdy_head[q]->p_nextready;
       tmp = rp->p_nextready;
