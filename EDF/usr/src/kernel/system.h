@@ -32,7 +32,7 @@
 
 #include "kernel/kernel.h"
 
-int do_chrealtime(message *m_ptr);
+int do_chrealtime(struct proc * caller, message *m_ptr);
 #if ! USE_CHREALTIME
 #define do_chrealtime NULL
 #endif

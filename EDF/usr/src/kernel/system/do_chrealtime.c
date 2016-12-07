@@ -21,8 +21,9 @@ void reach_deadline(timer_t * tp)
   cause_sig(tp->tmr_arg.ta_int,SIGTERM);
   return;
 }
-int do_chrealtime(message *m_ptr)
+int do_chrealtime(struct proc * caller, message *m_ptr)
 {
+  printf("do_chrealtime in kernel/system is called\n");
   struct proc *rp;
   timer_t *tp;
   rp = proc_addr(m_ptr->m2_i1); //m2_i1 is the end point, proc_addr is in kernel/proc.h
@@ -44,7 +45,6 @@ int do_chrealtime(message *m_ptr)
 	RTS_UNSET(rp, RTS_SYS_LOCK);//unlock the process, it can be scheduled
   return(OK);
 }
-void reach_deadline(timer_t *tp)
 
 
 #endif /* USE_CHREALTIME */

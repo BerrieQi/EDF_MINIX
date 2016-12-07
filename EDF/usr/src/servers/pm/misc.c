@@ -29,6 +29,7 @@
 #include "mproc.h"
 #include "param.h"
 #include "kernel/proc.h"
+ #include <stdio.h>
 
 struct utsname uts_val = {
   "Minix",		/* system name */
@@ -66,6 +67,7 @@ unsigned long calls_stats[NCALLS];
  *===========================================================================*/
 int do_chrealtime()
 {
+  printf("do_chrealtime in pm is called.\n" );
 	sys_chrealtime(who_p, m_in.m2_l1);
 	return OK;
 }

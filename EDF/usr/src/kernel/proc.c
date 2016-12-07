@@ -45,6 +45,8 @@
 
 #include <minix/syslib.h>
 
+ #include <stdio.h>
+
 /* Scheduling and message passing functions */
 static void idle(void);
 /**
@@ -1727,18 +1729,27 @@ static struct proc * pick_proc(void)
         continue;
     }
     //if current queue is 7, there might be real time proc. find it and execute small deadline proc first, new added 2016.12.3
+    
     if (q == 7)
     {
-      rp =rdy_head[q]->p_nextready;
-      tmp = rp->p_nextready;
+    	//printf("pick proc in queue 7\n");
+      rp =rdy_head[q];
+      if ( !rp )
+          {
+          	tmp = NULL;
+          	continue;
+          }
+      else
+          tmp = rp->p_nextready;
       while (tmp!=NULL)
       {
           //if next has deadline and ( current has no deadline or current deadline is larger than next)
-          if (tmp->p_deadline.tmr_exp_time>0 && (rp->p_deadline.tmr_exp_time ==0 || rp->p_deadline.tmr_exp_time>0 && rp->p_deadline.tmr_exp_time > tmp->p_deadline.tmr_exp_time ) )
+          if (tmp->p_deadline.tmr_exp_time>0 && (rp->p_deadline.tmr_exp_time ==0 || rp->p_deadline.tmr_exp_time>0 && rp->p_deadline.tmr_exp_time > tmp->p_deadline.tmr_exp_time ) && proc_is_runnable(tmp))
               rp=tmp;
           tmp=tmp->p_nextready;
       }
     }
+    
     assert(proc_is_runnable(rp));
     if (priv(rp)->s_flags & BILLABLE)
         get_cpulocal_var(bill_ptr) = rp; /* bill for system time */
